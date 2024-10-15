@@ -5,6 +5,8 @@ namespace ToDoList.Domain.Entities;
 
 public class Task : Entity, ITask
 {
+    private const uint _DESCRIPTION_MAX_LENGTH = 100;
+
     public string Description { get; private set; }
 
     public DateTime CreationDate { get; private set; }
@@ -29,7 +31,7 @@ public class Task : Entity, ITask
             AddError($"{nameof(Description)} should not be empty or null");
             isValid = false;
         }
-        else if (Description.Length > 100)
+        else if (Description.Length > _DESCRIPTION_MAX_LENGTH)
         {
             AddError($"{nameof(Description)} length should be less than 100 characters");
             isValid = false;

@@ -83,7 +83,7 @@ public class TaskTest
     }
 
     [Fact]
-    public void Task_WhenCreateObject_ShouldSetValuesAndStatusShouldBeCreatedAndCreatedTimeShouldBeNow()
+    public void Task_WhenCreateObject_ShouldSetValuesAndStatusShouldBeCreatedAndCreationDateShouldBeNow()
     {
         // Arrange
         var description = "My task";
