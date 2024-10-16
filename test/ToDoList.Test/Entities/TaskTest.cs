@@ -16,7 +16,7 @@ public class TaskTest
     )
     {
         // Arrange - Act
-        var task = Task.Factory(description);
+        var task = Task.Construct(description);
 
         // Should
         task.IsValid().ShouldBeFalse();
@@ -32,7 +32,7 @@ public class TaskTest
             length: 101);
 
         // Act
-        var task = Task.Factory(description);
+        var task = Task.Construct(description);
 
         // Should
         task.IsValid().ShouldBeFalse();
@@ -89,7 +89,7 @@ public class TaskTest
         var description = "My task";
 
         // Act
-        var task = Task.Factory(description);
+        var task = Task.Construct(description);
 
         // Should
         task.IsValid().ShouldBeTrue();

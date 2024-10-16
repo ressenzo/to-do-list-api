@@ -27,14 +27,15 @@ public class Response<T> where T : class
             ResponseType.SUCCESS,
             []);
     
-    public static Response<T> ValidationError(IEnumerable<string> errors) =>
+    public static Response<T> ValidationError(
+        IEnumerable<string> errors) =>
         new(null!,
             ResponseType.VALIDATION_ERROR,
             errors);
+}
 
-    public enum ResponseType
-    {
-        SUCCESS,
-        VALIDATION_ERROR
-    }
+public enum ResponseType
+{
+    SUCCESS,
+    VALIDATION_ERROR
 }

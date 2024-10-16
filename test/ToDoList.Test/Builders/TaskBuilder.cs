@@ -5,5 +5,5 @@ namespace ToDoList.Test.Builders;
 public class TaskBuilder : BaseBuilder<Task>
 {
     public override Task Build() =>
-        (Task)Task.Factory("My task");
+        (Task)Task.Construct("My task");
 }

@@ -20,7 +20,7 @@ public class Task : Entity, ITask
         Status = Status.CREATED;
     }
 
-    public static ITask Factory(string description) =>
+    public static ITask Construct(string description) =>
         new Task(description);
 
     public override bool IsValid()
