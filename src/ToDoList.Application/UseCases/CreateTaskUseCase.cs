@@ -1,14 +1,16 @@
 using ToDoList.Application.Responses;
 using ToDoList.Application.UseCases.Interfaces;
-using Task = ToDoList.Domain.Entities.Task;
+using ToDoList.Domain.Factories.Interfaces;
 
 namespace ToDoList.Application.UseCases;
 
-public class CreateTaskUseCase() : ICreateTaskUseCase
+public class CreateTaskUseCase(
+    ITaskFactory taskFactory) : ICreateTaskUseCase
 {
     public async Task<Response<CreateTaskResponse>> CreateTask(string description)
     {
-        var task = Task.Construct(description);
+        var task = taskFactory
+            .Factory(description);
         if (!task.IsValid())
         {
             return Response<CreateTaskResponse>.ValidationError(
