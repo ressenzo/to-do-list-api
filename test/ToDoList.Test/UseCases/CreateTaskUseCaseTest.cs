@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using ToDoList.Application.Responses;
 using ToDoList.Application.UseCases;
 using ToDoList.Domain.Entities.Interfaces;
@@ -9,15 +10,18 @@ namespace ToDoList.Test.UseCases;
 public class CreateTaskUseCaseTest
 {
     private readonly CreateTaskUseCase _createTaskUseCase;
+    private readonly Mock<ILogger<CreateTaskUseCase>> _logger;
     private readonly Mock<ITaskFactory> _taskFactory;
     private readonly Mock<ITaskRepository> _taskRepository;
     private readonly Mock<ITask> _task;
 
     public CreateTaskUseCaseTest()
     {
+        _logger = new();
         _taskFactory = new();
         _taskRepository = new();
         _createTaskUseCase = new(
+            _logger.Object,
             _taskFactory.Object,
             _taskRepository.Object);
         _task = new();
@@ -109,5 +113,9 @@ public class CreateTaskUseCaseTest
 
         // Assert
         result.Type.ShouldBe(ResponseType.INTERNAL_ERROR);
+        _logger.VerifyLog(x => x.LogError(exception,
+                "{Message}",
+                exception.Message),
+            Times.Once);
     }
 }

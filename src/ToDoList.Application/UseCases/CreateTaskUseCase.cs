@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using ToDoList.Application.Responses;
 using ToDoList.Application.UseCases.Interfaces;
 using ToDoList.Domain.Factories.Interfaces;
@@ -6,6 +7,7 @@ using ToDoList.Infrastructure.Repositories.Interfaces;
 namespace ToDoList.Application.UseCases;
 
 internal class CreateTaskUseCase(
+    ILogger<CreateTaskUseCase> logger,
     ITaskFactory taskFactory,
     ITaskRepository taskRepository) : ICreateTaskUseCase
 {
@@ -27,8 +29,11 @@ internal class CreateTaskUseCase(
             return Response<CreateTaskResponse>
                 .Success(response);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            logger.LogError(ex,
+                "{Message}",
+                ex.Message);
             return Response<CreateTaskResponse>.InternalError();
         }
     }
