@@ -18,7 +18,7 @@ public class TaskTest
         // Arrange - Act
         var task = Task.Construct(description);
 
-        // Should
+        // Assert
         task.IsValid().ShouldBeFalse();
         task.Errors.ShouldNotBeEmpty();
         task.Errors.Count().ShouldBe(1);
@@ -34,7 +34,7 @@ public class TaskTest
         // Act
         var task = Task.Construct(description);
 
-        // Should
+        // Assert
         task.IsValid().ShouldBeFalse();
         task.Errors.ShouldNotBeEmpty();
         task.Errors.Count().ShouldBe(1);
@@ -50,7 +50,7 @@ public class TaskTest
         // Act
         task.SetAsDone();
 
-        // Should
+        // Assert
         task.Status.ShouldBe(Status.DONE);
     }
 
@@ -64,7 +64,7 @@ public class TaskTest
         // Act
         task.SetAsCanceled();
 
-        // Should
+        // Assert
         task.Status.ShouldBe(Status.CANCELED);
     }
 
@@ -78,7 +78,7 @@ public class TaskTest
         // Act
         task.SetAsInProgress();
 
-        // Should
+        // Assert
         task.Status.ShouldBe(Status.IN_PROGRESS);
     }
 
@@ -91,7 +91,7 @@ public class TaskTest
         // Act
         var task = Task.Construct(description);
 
-        // Should
+        // Assert
         task.IsValid().ShouldBeTrue();
         task.Description.ShouldBe(description);
         task.Status.ShouldBe(Status.CREATED);

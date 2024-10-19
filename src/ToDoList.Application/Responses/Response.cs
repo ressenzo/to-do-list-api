@@ -29,17 +29,23 @@ public class Response<T> where T : class
     public static Response<T> Success(T content) =>
         new(content,
             ResponseType.SUCCESS,
-            []);
+            errors: []);
     
     public static Response<T> ValidationError(
         IEnumerable<string> errors) =>
-        new(null!,
+        new(content: null!,
             ResponseType.VALIDATION_ERROR,
             errors);
+
+    public static Response<T> InternalError() =>
+        new(content: null!,
+            ResponseType.INTERNAL_ERROR,
+            errors: ["An error ocurred during this operation"]);
 }
 
 public enum ResponseType
 {
     SUCCESS,
-    VALIDATION_ERROR
+    VALIDATION_ERROR,
+    INTERNAL_ERROR
 }

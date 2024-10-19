@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using ToDoList.Application.Responses;
 using ToDoList.Test.Builders;
 
 namespace ToDoList.Test.Controllers;
@@ -52,5 +51,29 @@ public partial class TaskControllerTest
                 It.IsAny<string>()),
             Times.Once);
         response.ShouldBeOfType<BadRequestObjectResult>();
+    }
+
+    [Fact]
+    public async Task Type_WhenIsInternalError_ShouldReturn500()
+    {
+        // Arrange
+        var request = new CreateTaskRequestBuilder()
+            .Build();
+        var internalErrorResponse = new CreateTaskResponseBuilder()
+            .InternalError()
+            .Build();
+        _createTaskUseCase
+            .Setup(x => x.CreateTask(It.IsAny<string>()))
+            .ReturnsAsync(internalErrorResponse);
+
+        // Act
+        var response  = await _taskController
+            .CreateTask(request);
+
+        // Assert
+        _createTaskUseCase.Verify(x => x.CreateTask(
+                It.IsAny<string>()),
+            Times.Once);
+        response.ShouldBeOfType<ObjectResult>();
     }
 }

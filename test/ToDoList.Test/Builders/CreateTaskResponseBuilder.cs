@@ -22,6 +22,13 @@ public class CreateTaskResponseBuilder : BaseBuilder<Response<CreateTaskResponse
         return this;
     }
 
+    public CreateTaskResponseBuilder InternalError()
+    {
+        _response = Response<CreateTaskResponse>
+            .InternalError();
+        return this;
+    }
+
     public override Response<CreateTaskResponse> Build() =>
         _response!;
 }

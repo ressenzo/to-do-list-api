@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Application.Requests;
 using ToDoList.Application.Responses;
@@ -21,6 +22,8 @@ public class TaskController(
         {
             ResponseType.SUCCESS => Ok(result),
             ResponseType.VALIDATION_ERROR => BadRequest(result),
+            ResponseType.INTERNAL_ERROR => new ObjectResult(result)
+                { StatusCode = (int)HttpStatusCode.InternalServerError },
             _ => NoContent()
         };
     }

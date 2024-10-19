@@ -11,18 +11,25 @@ internal class CreateTaskUseCase(
 {
     public async Task<Response<CreateTaskResponse>> CreateTask(string description)
     {
-        var task = taskFactory
-            .Factory(description);
-        if (!task.IsValid())
+        try
         {
-            return Response<CreateTaskResponse>.ValidationError(
-                task.Errors);
-        }
+            var task = taskFactory
+            .Factory(description);
+            if (!task.IsValid())
+            {
+                return Response<CreateTaskResponse>.ValidationError(
+                    task.Errors);
+            }
 
-        await taskRepository.CreateTask(task);
-        var response = CreateTaskResponse
-            .Factory(task);
-        return Response<CreateTaskResponse>
-            .Success(response);
+            await taskRepository.CreateTask(task);
+            var response = CreateTaskResponse
+                .Factory(task);
+            return Response<CreateTaskResponse>
+                .Success(response);
+        }
+        catch (Exception)
+        {
+            return Response<CreateTaskResponse>.InternalError();
+        }
     }
 }

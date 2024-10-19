@@ -41,7 +41,7 @@ public class CreateTaskUseCaseTest
         var result = await _createTaskUseCase
             .CreateTask(invalidDescription);
 
-        // Should
+        // Assert
         _taskFactory.Verify(x => x.Factory(
                 It.Is<string>(x => x == null)),
             Times.Once);
@@ -72,7 +72,7 @@ public class CreateTaskUseCaseTest
         var result = await _createTaskUseCase
             .CreateTask(validDescription);
 
-        // Should
+        // Assert
         _taskFactory.Verify(x => x.Factory(
                 It.Is<string>(x => x.Equals(validDescription))),
             Times.Once);
@@ -85,5 +85,29 @@ public class CreateTaskUseCaseTest
         result.Type.ShouldBe(ResponseType.SUCCESS);
         result.Content.ShouldNotBeNull();
         result.Errors.ShouldBeEmpty();
+    }
+
+    [Fact]
+    public async Task WhenExpcetionIsThrown_ShouldReturnInternalError()
+    {
+        // Arrange
+        _task.Setup(x => x.IsValid())
+            .Returns(true);
+        _taskFactory
+            .Setup(x => x.Factory(
+                It.IsAny<string>()))
+            .Returns(_task.Object);
+        string validDescription = "Task";
+        var exception = new Exception("Exception");
+        _taskRepository
+            .Setup(x => x.CreateTask(It.IsAny<ITask>()))
+            .ThrowsAsync(exception);
+
+        // Act
+        var result = await _createTaskUseCase
+            .CreateTask(validDescription);
+
+        // Assert
+        result.Type.ShouldBe(ResponseType.INTERNAL_ERROR);
     }
 }
