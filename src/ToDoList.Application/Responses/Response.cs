@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace ToDoList.Application.Responses;
 
 public class Response<T> where T : class
@@ -6,10 +8,12 @@ public class Response<T> where T : class
 
     public T? Content { get; private set; }
 
+    [JsonIgnore]
     public ResponseType Type { get; private set; }
 
     public IEnumerable<string> Errors => _errors;
 
+    [JsonIgnore]
     public bool IsSuccess => Type == ResponseType.SUCCESS;
 
     private Response(T content,

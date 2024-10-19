@@ -1,8 +1,8 @@
-using Moq;
 using ToDoList.Application.Responses;
 using ToDoList.Application.UseCases;
 using ToDoList.Domain.Entities.Interfaces;
 using ToDoList.Domain.Factories.Interfaces;
+using ToDoList.Infrastructure.Repositories.Interfaces;
 
 namespace ToDoList.Test.UseCases;
 
@@ -10,13 +10,16 @@ public class CreateTaskUseCaseTest
 {
     private readonly CreateTaskUseCase _createTaskUseCase;
     private readonly Mock<ITaskFactory> _taskFactory;
+    private readonly Mock<ITaskRepository> _taskRepository;
     private readonly Mock<ITask> _task;
 
     public CreateTaskUseCaseTest()
     {
         _taskFactory = new();
+        _taskRepository = new();
         _createTaskUseCase = new(
-            _taskFactory.Object);
+            _taskFactory.Object,
+            _taskRepository.Object);
         _task = new();
     }
 
@@ -44,6 +47,9 @@ public class CreateTaskUseCaseTest
             Times.Once);
         _task.Verify(x => x.IsValid(),
             Times.Once);
+        _taskRepository.Verify(x => x.CreateTask(
+                It.IsAny<ITask>()),
+            Times.Never);
         result.IsSuccess.ShouldBeFalse();
         result.Type.ShouldBe(ResponseType.VALIDATION_ERROR);
         result.Content.ShouldBeNull();
@@ -71,6 +77,9 @@ public class CreateTaskUseCaseTest
                 It.Is<string>(x => x.Equals(validDescription))),
             Times.Once);
         _task.Verify(x => x.IsValid(),
+            Times.Once);
+        _taskRepository.Verify(x => x.CreateTask(
+                _task.Object),
             Times.Once);
         result.IsSuccess.ShouldBeTrue();
         result.Type.ShouldBe(ResponseType.SUCCESS);
