@@ -1,3 +1,7 @@
+using ToDoList.Application;
+using ToDoList.Domain;
+using ToDoList.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddApplication();
+builder.Services.AddDomain();
+builder.Services.AddInfrastructure();
 
 var app = builder.Build();
 
