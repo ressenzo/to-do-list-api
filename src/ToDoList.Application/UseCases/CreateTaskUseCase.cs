@@ -14,7 +14,7 @@ internal class CreateTaskUseCase(
         try
         {
             var task = taskFactory
-            .Factory(description);
+                .Factory(description);
             if (!task.IsValid())
             {
                 return Response<CreateTaskResponse>.ValidationError(

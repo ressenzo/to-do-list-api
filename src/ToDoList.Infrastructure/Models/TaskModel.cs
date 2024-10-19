@@ -1,22 +1,23 @@
+using MongoDB.Bson.Serialization.Attributes;
 using ToDoList.Domain.Entities.Interfaces;
-using ToDoList.Domain.Enums;
 
-namespace ToDoList.Application.Responses;
+namespace ToDoList.Infrastructure.Models;
 
-public class CreateTaskResponse
+internal class TaskModel
 {
+    [BsonId]
     public string Id { get; private set; }
 
     public string Description { get; private set; }
 
     public DateTime CreationDate { get; private set; }
 
-    public Status Status { get; private set; }
+    public int Status { get; private set; }
 
-    private CreateTaskResponse(string id,
+    private TaskModel(string id,
         string description,
         DateTime creationDate,
-        Status status)
+        int status)
     {
         Id = id;
         Description = description;
@@ -24,9 +25,9 @@ public class CreateTaskResponse
         Status = status;
     }
 
-    public static CreateTaskResponse Factory(ITask task) =>
+    public static TaskModel Construct(ITask task) =>
         new(task.Id,
             task.Description,
             task.CreationDate,
-            task.Status);
+            (int)task.Status);
 }

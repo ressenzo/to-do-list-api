@@ -8,11 +8,11 @@ public abstract class Entity : IEntity
 
     protected Entity()
     {
-        Id = Guid.NewGuid();
+        Id = Guid.NewGuid().ToString()[..8];
         _errors = [];
     }
 
-    public Guid Id { get; private set; }
+    public string Id { get; private set; }
 
     public IEnumerable<string> Errors =>
         _errors;
