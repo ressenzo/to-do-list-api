@@ -1,6 +1,0 @@
-@ToDoList.Presentation_HostAddress = http://localhost:5063
-
-GET {{ToDoList.Presentation_HostAddress}}/tasks/
-Accept: application/json
-
-###

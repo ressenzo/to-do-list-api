@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Test", "test\ToDoL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Application", "src\ToDoList.Application\ToDoList.Application.csproj", "{BCD52C04-6FE3-479D-A0DB-6D0935B121BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Presentation", "src\ToDoList.Presentation\ToDoList.Presentation.csproj", "{894F1B22-8388-43B5-9B7F-69E1BE4A6BD2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Api", "src\ToDoList.Api\ToDoList.Api.csproj", "{894F1B22-8388-43B5-9B7F-69E1BE4A6BD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

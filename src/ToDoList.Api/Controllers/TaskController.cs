@@ -4,7 +4,7 @@ using ToDoList.Application.Requests;
 using ToDoList.Application.Responses;
 using ToDoList.Application.UseCases.Interfaces;
 
-namespace ToDoList.Presentation.Controllers;
+namespace ToDoList.Api.Controllers;
 
 [ApiController]
 [Route("tasks")]
