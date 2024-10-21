@@ -4,11 +4,18 @@ namespace ToDoList.Domain.Entities;
 
 public abstract class Entity : IEntity
 {
+    private const int ID_LENGTH = 8;
     private readonly List<string> _errors;
 
     protected Entity()
     {
-        Id = Guid.NewGuid().ToString()[..8];
+        Id = Guid.NewGuid().ToString()[..ID_LENGTH];
+        _errors = [];
+    }
+
+    protected Entity(string id)
+    {
+        Id = id;
         _errors = [];
     }
 
