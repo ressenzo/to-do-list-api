@@ -26,4 +26,14 @@ internal class TaskRepository : ITaskRepository
         var taskModel = TaskModel.Construct(task);
         await _taskCollection.InsertOneAsync(taskModel);
     }
+
+    public async Task<ITask> GetTask(string id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task UpdateTask(ITask task)
+    {
+        throw new NotImplementedException();
+    }
 }
