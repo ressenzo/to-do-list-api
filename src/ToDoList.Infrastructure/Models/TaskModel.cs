@@ -1,5 +1,7 @@
 using MongoDB.Bson.Serialization.Attributes;
+using Task = ToDoList.Domain.Entities.Task;
 using ToDoList.Domain.Entities.Interfaces;
+using ToDoList.Domain.Enums;
 
 namespace ToDoList.Infrastructure.Models;
 
@@ -30,4 +32,10 @@ internal class TaskModel
             task.Description,
             task.CreationDate,
             (int)task.Status);
+
+    public ITask ToEntity() =>
+        Task.Construct(Id,
+            Description,
+            CreationDate,
+            (Status)Status);
 }

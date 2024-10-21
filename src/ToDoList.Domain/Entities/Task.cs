@@ -20,8 +20,27 @@ public class Task : Entity, ITask
         Status = Status.CREATED;
     }
 
+    private Task(string id,
+        string description,
+        DateTime creationDate,
+        Status status) : base(id)
+    {
+        Description = description;
+        CreationDate = creationDate;
+        Status = status;
+    }
+
     public static ITask Construct(string description) =>
         new Task(description);
+
+    public static ITask Construct(string id,
+        string description,
+        DateTime creationDate,
+        Status status) =>
+        new Task(id,
+            description,
+            creationDate,
+            status);
 
     public override bool IsValid()
     {
