@@ -29,11 +29,20 @@ internal class TaskRepository : ITaskRepository
 
     public async Task<ITask> GetTask(string id)
     {
-        throw new NotImplementedException();
+        var taskModel = await _taskCollection
+            .Find(x => x.Id.Equals(id))
+            .FirstAsync();
+        return taskModel.ToEntity();
     }
 
-    public Task UpdateTask(ITask task)
+    public async Task<bool> UpdateTask(ITask task)
     {
-        throw new NotImplementedException();
+        var taskModel = TaskModel.Construct(task);
+        var filter = Builders<TaskModel>
+            .Filter
+            .Eq(x => x.Id, taskModel.Id);
+        var replaceResult = await _taskCollection
+            .ReplaceOneAsync(filter, taskModel);
+        return replaceResult.ModifiedCount > 0;
     }
 }

@@ -8,5 +8,5 @@ public interface ITaskRepository
 
     Task<ITask> GetTask(string id);
 
-    Task UpdateTask(ITask task);
+    Task<bool> UpdateTask(ITask task);
 }
