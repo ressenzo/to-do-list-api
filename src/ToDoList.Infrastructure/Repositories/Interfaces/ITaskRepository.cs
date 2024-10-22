@@ -6,7 +6,7 @@ public interface ITaskRepository
 {
     Task CreateTask(ITask task);
 
-    Task<ITask> GetTask(string id);
+    Task<ITask?> GetTask(string id);
 
     Task<bool> UpdateTask(ITask task);
 }

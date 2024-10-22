@@ -27,12 +27,12 @@ internal class TaskRepository : ITaskRepository
         await _taskCollection.InsertOneAsync(taskModel);
     }
 
-    public async Task<ITask> GetTask(string id)
+    public async Task<ITask?> GetTask(string id)
     {
         var taskModel = await _taskCollection
             .Find(x => x.Id.Equals(id))
-            .FirstAsync();
-        return taskModel.ToEntity();
+            .FirstOrDefaultAsync();
+        return taskModel?.ToEntity();
     }
 
     public async Task<bool> UpdateTask(ITask task)
