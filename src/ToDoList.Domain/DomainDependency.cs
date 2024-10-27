@@ -13,11 +13,10 @@ public static class DomainDependency
         return services;
     }
 
-    
-
-    private static void AddFactories(
+    private static IServiceCollection AddFactories(
         this IServiceCollection services)
     {
         services.AddSingleton<ITaskFactory, TaskFactory>();
+        return services;
     }
 }
