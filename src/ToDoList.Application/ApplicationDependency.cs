@@ -16,6 +16,8 @@ public static class ApplicationDependency
     private static void AddUseCases(
         this IServiceCollection services)
     {
-        services.AddScoped<ICreateTaskUseCase, CreateTaskUseCase>();
+        services
+            .AddScoped<ICreateTaskUseCase, CreateTaskUseCase>()
+            .AddScoped<ISetTaskInProgressUseCase, SetTaskInProgressUseCase>();
     }
 }

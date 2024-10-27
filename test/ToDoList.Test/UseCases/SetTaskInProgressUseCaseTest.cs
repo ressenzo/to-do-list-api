@@ -69,8 +69,12 @@ public class SetTaskInProgressUseCaseTest
                 Times.Never);
     }
 
-    [Fact]
-    public async Task Task_WhenIsFound_ShouldSetAsInProgressAndUpdate()
+    [Theory]
+    [InlineData(true, ResponseType.SUCCESS)]
+    [InlineData(false, ResponseType.INTERNAL_ERROR)]
+    public async Task Task_WhenIsFound_ShouldSetAsInProgressAndUpdate(
+        bool updateResult,
+        ResponseType responseType)
     {
         // Arrange
         _task.Setup(x => x.Id)
@@ -78,14 +82,20 @@ public class SetTaskInProgressUseCaseTest
         _taskRepository
             .Setup(x => x.GetTask(It.IsAny<string>()))
             .ReturnsAsync(_task.Object);
+        _taskRepository
+            .Setup(x => x.UpdateTask(It.IsAny<ITask>()))
+            .ReturnsAsync(updateResult);
 
         // Act
         var result = await _setTaskInProgressUseCase
             .SetTaskInProgress(id: "12345");
 
         // Assert
-        result.Type.ShouldBe(ResponseType.SUCCESS);
-        result.Errors.ShouldBeEmpty();
+        result.Type.ShouldBe(responseType);
+        if (updateResult)
+            result.Errors.ShouldBeEmpty();
+        else
+            result.Errors.ShouldNotBeEmpty();
         _taskRepository
             .Verify(x => x.GetTask(It.IsAny<string>()),
                 Times.Once);
@@ -94,5 +104,28 @@ public class SetTaskInProgressUseCaseTest
         _taskRepository
             .Verify(x => x.UpdateTask(It.IsAny<ITask>()),
                 Times.Once);
+    }
+
+    [Fact]
+    public async Task WhenExpcetionIsThrown_ShouldReturnInternalError()
+    {
+        // Arrange
+        _task.Setup(x => x.Id)
+            .Returns("12345");
+        var exception = new Exception("Exception");
+        _taskRepository
+            .Setup(x => x.GetTask(It.IsAny<string>()))
+            .ThrowsAsync(exception);
+
+        // Act
+        var result = await _setTaskInProgressUseCase
+            .SetTaskInProgress(id: "12345");
+
+        // Assert
+        result.Type.ShouldBe(ResponseType.INTERNAL_ERROR);
+        _logger.VerifyLog(x => x.LogError(exception,
+                "{Message}",
+                exception.Message),
+            Times.Once);
     }
 }

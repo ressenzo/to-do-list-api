@@ -13,22 +13,35 @@ internal class SetTaskInProgressUseCase(
 
     public async Task<Response> SetTaskInProgress(string id)
     {
-        if (string.IsNullOrWhiteSpace(id) ||
-            id.Length > _ID_LENGTH)
+        try
         {
-            return Response
-                .ValidationError([$"{nameof(id)} should be passed"]);
-        }
+            if (string.IsNullOrWhiteSpace(id) ||
+                id.Length > _ID_LENGTH)
+            {
+                return Response
+                    .ValidationError([$"{nameof(id)} should be passed"]);
+            }
 
-        var task = await taskRepository.GetTask(id);
-        if (task is null)
+            var task = await taskRepository.GetTask(id);
+            if (task is null)
+            {
+                return Response
+                    .NotFound([$"Task with id {id} not found"]);
+            }
+
+            task.SetAsInProgress();
+            var updateResult = await taskRepository.UpdateTask(task);
+            if (updateResult)
+                return Response.Success();
+            
+            return Response.InternalError();
+        }
+        catch (Exception ex)
         {
-            return Response
-                .NotFound([$"Task with id {id} not found"]);
+            logger.LogError(ex,
+                "{Message}",
+                ex.Message);
+            return Response.InternalError();
         }
-
-        task.SetAsInProgress();
-        await taskRepository.UpdateTask(task);
-        return Response.Success();
     }
 }
