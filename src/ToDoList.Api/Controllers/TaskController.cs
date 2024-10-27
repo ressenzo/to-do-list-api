@@ -7,9 +7,10 @@ using ToDoList.Application.UseCases.Interfaces;
 namespace ToDoList.Api.Controllers;
 
 [ApiController]
-[Route("tasks")]
+[Route("api/tasks")]
 public class TaskController(
-    ICreateTaskUseCase createTaskUseCase) : ControllerBase
+    ICreateTaskUseCase createTaskUseCase,
+    ISetTaskInProgressUseCase setTaskInProgressUseCase) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> CreateTask(
@@ -24,7 +25,25 @@ public class TaskController(
             ResponseType.VALIDATION_ERROR => BadRequest(result),
             ResponseType.INTERNAL_ERROR => new ObjectResult(result)
                 { StatusCode = (int)HttpStatusCode.InternalServerError },
-            _ => NoContent()
+            _ => new ObjectResult(result)
+                { StatusCode = (int)HttpStatusCode.InternalServerError }
+        };
+    }
+
+    [HttpPut("{id:string}")]
+    public async Task<IActionResult> SetTaskInProgress(string id)
+    {
+        var result = await setTaskInProgressUseCase
+            .SetTaskInProgress(id);
+
+        return result.Type switch
+        {
+            ResponseType.VALIDATION_ERROR => BadRequest(result),
+            ResponseType.SUCCESS => NoContent(),
+            ResponseType.INTERNAL_ERROR => new ObjectResult(result)
+                { StatusCode = (int)HttpStatusCode.InternalServerError },
+            _ => new ObjectResult(result)
+                { StatusCode = (int)HttpStatusCode.InternalServerError }
         };
     }
 }

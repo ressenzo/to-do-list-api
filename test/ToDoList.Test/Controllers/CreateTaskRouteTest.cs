@@ -6,7 +6,7 @@ namespace ToDoList.Test.Controllers;
 public partial class TaskControllerTest
 {
     [Fact]
-    public async Task Type_WhenIsSuccess_ShouldReturnOk()
+    public async Task CreateTaskRoute_Type_WhenIsSuccess_ShouldReturnOk()
     {
         // Arrange
         var request = new CreateTaskRequestBuilder()
@@ -30,7 +30,7 @@ public partial class TaskControllerTest
     }
 
     [Fact]
-    public async Task Type_WhenIsValidationError_ShouldReturnBadRequest()
+    public async Task CreateTaskRoute_Type_WhenIsValidationError_ShouldReturnBadRequest()
     {
         // Arrange
         var request = new CreateTaskRequestBuilder()
@@ -54,7 +54,7 @@ public partial class TaskControllerTest
     }
 
     [Fact]
-    public async Task Type_WhenIsInternalError_ShouldReturn500()
+    public async Task CreateTaskRoute_Type_WhenIsInternalError_ShouldReturn500()
     {
         // Arrange
         var request = new CreateTaskRequestBuilder()
