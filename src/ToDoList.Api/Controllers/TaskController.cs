@@ -30,7 +30,7 @@ public class TaskController(
         };
     }
 
-    [HttpPut("{id:string}")]
+    [HttpPut("{id}/in-progress")]
     public async Task<IActionResult> SetTaskInProgress(string id)
     {
         var result = await setTaskInProgressUseCase
