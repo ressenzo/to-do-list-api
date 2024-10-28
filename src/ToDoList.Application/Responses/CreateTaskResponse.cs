@@ -24,7 +24,7 @@ public class CreateTaskResponse
         Status = status;
     }
 
-    public static CreateTaskResponse Factory(ITask task) =>
+    public static CreateTaskResponse Construct(ITask task) =>
         new(task.Id,
             task.Description,
             task.CreationDate,

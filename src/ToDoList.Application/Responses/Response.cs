@@ -41,6 +41,12 @@ public class Response<T> where T : class
         new(content: null!,
             ResponseType.INTERNAL_ERROR,
             errors: ["An error ocurred during this operation"]);
+
+    public static Response<T> NotFound(
+        IEnumerable<string> errors) =>
+        new(content: null!,
+            ResponseType.NOT_FOUND,
+            errors);
 }
 
 public class Response

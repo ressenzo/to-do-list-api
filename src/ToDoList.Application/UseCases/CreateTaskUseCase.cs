@@ -25,7 +25,7 @@ internal class CreateTaskUseCase(
 
             await taskRepository.CreateTask(task);
             var response = CreateTaskResponse
-                .Factory(task);
+                .Construct(task);
             return Response<CreateTaskResponse>
                 .Success(response);
         }

@@ -9,4 +9,6 @@ public interface ITaskRepository
     Task<ITask?> GetTask(string id);
 
     Task<bool> UpdateTask(ITask task);
+
+    Task<IEnumerable<ITask>?> GetTasks();
 }

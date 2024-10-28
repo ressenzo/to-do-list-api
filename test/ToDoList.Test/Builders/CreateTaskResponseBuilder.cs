@@ -10,7 +10,7 @@ public class CreateTaskResponseBuilder : BaseBuilder<Response<CreateTaskResponse
     {
         var task = new TaskBuilder()
             .Build();
-        var response = CreateTaskResponse.Factory(task);
+        var response = CreateTaskResponse.Construct(task);
         _response = Response<CreateTaskResponse>.Success(response);
         return this;
     }

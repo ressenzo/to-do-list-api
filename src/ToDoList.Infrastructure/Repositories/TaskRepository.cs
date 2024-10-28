@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using ToDoList.Domain.Entities.Interfaces;
 using ToDoList.Infrastructure.Models;
@@ -33,6 +34,16 @@ internal class TaskRepository : ITaskRepository
             .Find(x => x.Id.Equals(id))
             .FirstOrDefaultAsync();
         return taskModel?.ToEntity();
+    }
+
+    public async Task<IEnumerable<ITask>?> GetTasks()
+    {
+        var tasks = await _taskCollection
+            .Find(new BsonDocument())
+            .ToListAsync();
+
+        return tasks?
+            .Select(x => x.ToEntity());
     }
 
     public async Task<bool> UpdateTask(ITask task)
