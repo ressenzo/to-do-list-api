@@ -6,6 +6,7 @@ public class Response<T> where T : class
 {
     private readonly List<string> _errors;
 
+    [JsonIgnore]
     public T? Content { get; private set; }
 
     [JsonIgnore]
