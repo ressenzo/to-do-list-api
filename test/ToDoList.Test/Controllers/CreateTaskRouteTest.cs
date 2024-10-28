@@ -6,7 +6,7 @@ namespace ToDoList.Test.Controllers;
 public partial class TaskControllerTest
 {
     [Fact]
-    public async Task CreateTaskRoute_Type_WhenIsSuccess_ShouldReturnOk()
+    public async Task CreateTaskRoute_Type_WhenIsSuccess_ShouldReturnCreated()
     {
         // Arrange
         var request = new CreateTaskRequestBuilder()
@@ -26,7 +26,8 @@ public partial class TaskControllerTest
         _createTaskUseCase.Verify(x => x.CreateTask(
                 It.IsAny<string>()),
             Times.Once);
-        response.ShouldBeOfType<OkObjectResult>();
+        var createdResult = response.ShouldBeOfType<CreatedResult>();
+        createdResult.Location.ShouldNotBeEmpty();
     }
 
     [Fact]

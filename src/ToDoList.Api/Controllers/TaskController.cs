@@ -21,7 +21,8 @@ public class TaskController(
         
         return result.Type switch
         {
-            ResponseType.SUCCESS => Ok(result),
+            ResponseType.SUCCESS => Created($"api/tasks/{result.Content!.Id}",
+                result),
             ResponseType.VALIDATION_ERROR => BadRequest(result),
             ResponseType.INTERNAL_ERROR => new ObjectResult(result)
                 { StatusCode = (int)HttpStatusCode.InternalServerError },
