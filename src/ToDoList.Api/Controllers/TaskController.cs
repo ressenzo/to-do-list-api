@@ -1,5 +1,6 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using ToDoList.Application.Requests;
 using ToDoList.Application.Responses;
 using ToDoList.Application.UseCases.Interfaces;
@@ -14,6 +15,10 @@ public class TaskController(
     ISetTaskInProgressUseCase setTaskInProgressUseCase) : ControllerBase
 {
     [HttpGet]
+    [SwaggerOperation("Get all tasks")]
+    [SwaggerResponse(statusCode: (int)HttpStatusCode.OK, type: typeof(GetTasksResponse))]
+    [SwaggerResponse(statusCode: (int)HttpStatusCode.NotFound, type: typeof(Response))]
+    [SwaggerResponse(statusCode: (int)HttpStatusCode.InternalServerError, type: typeof(Response))]
     public async Task<IActionResult> GetTasks()
     {
         var result = await getTasksUseCase
@@ -28,6 +33,10 @@ public class TaskController(
     }
 
     [HttpPost]
+    [SwaggerOperation("Create a new task")]
+    [SwaggerResponse(statusCode: (int)HttpStatusCode.Created, type: typeof(CreateTaskResponse))]
+    [SwaggerResponse(statusCode: (int)HttpStatusCode.BadRequest, type: typeof(Response))]
+    [SwaggerResponse(statusCode: (int)HttpStatusCode.InternalServerError, type: typeof(Response))]
     public async Task<IActionResult> CreateTask(
         CreateTaskRequest request)
     {
@@ -46,6 +55,10 @@ public class TaskController(
     }
 
     [HttpPut("{id}/in-progress")]
+    [SwaggerOperation("Set a task as in progress")]
+    [SwaggerResponse(statusCode: (int)HttpStatusCode.NoContent)]
+    [SwaggerResponse(statusCode: (int)HttpStatusCode.BadRequest, type: typeof(Response))]
+    [SwaggerResponse(statusCode: (int)HttpStatusCode.InternalServerError, type: typeof(Response))]
     public async Task<IActionResult> SetTaskInProgress(string id)
     {
         var result = await setTaskInProgressUseCase
@@ -53,8 +66,8 @@ public class TaskController(
 
         return result.Type switch
         {
-            ResponseType.VALIDATION_ERROR => BadRequest(result),
             ResponseType.SUCCESS => NoContent(),
+            ResponseType.VALIDATION_ERROR => BadRequest(result),
             ResponseType.INTERNAL_ERROR => ReturnInternalError(result),
             _ => ReturnInternalError(result)
         };
