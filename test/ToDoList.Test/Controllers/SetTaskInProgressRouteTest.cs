@@ -1,4 +1,6 @@
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using ToDoList.Application.Responses;
 using ToDoList.Test.Builders;
 
 namespace ToDoList.Test.Controllers;
@@ -6,7 +8,7 @@ namespace ToDoList.Test.Controllers;
 public partial class TaskControllerTest
 {
     [Fact]
-    public async Task SetTaskInProgressTest_Type_WhenIsValidationError_ShouldReturnBadRequest()
+    public async Task SetTaskInProgressRoute_Type_WhenIsValidationError_ShouldReturnBadRequest()
     {
         // Arrange
         var barRequestResponse = new SetTaskInProgressResponseBuilder()
@@ -24,11 +26,14 @@ public partial class TaskControllerTest
         _setTaskInProgressUseCase.Verify(x => x.SetTaskInProgress(
                 It.IsAny<string>()),
             Times.Once);
-        response.ShouldBeOfType<BadRequestObjectResult>();
+        var badRequestResult = response
+            .ShouldBeOfType<BadRequestObjectResult>();
+        badRequestResult.Value.ShouldNotBeNull();
+        badRequestResult.Value.ShouldBeOfType<Response>();
     }
 
     [Fact]
-    public async Task SetTaskInProgressTest_Type_WhenIsSuccess_ShouldReturnBadRequest()
+    public async Task SetTaskInProgressRoute_Type_WhenIsSuccess_ShouldReturnBadRequest()
     {
         // Arrange
         var successResponse = new SetTaskInProgressResponseBuilder()
@@ -50,7 +55,7 @@ public partial class TaskControllerTest
     }
 
     [Fact]
-    public async Task SetTaskInProgressTest_Type_WhenIsInternalError_ShouldReturnBadRequest()
+    public async Task SetTaskInProgressRoute_Type_WhenIsInternalError_ShouldReturnBadRequest()
     {
         // Arrange
         var internalErrorResponse = new SetTaskInProgressResponseBuilder()
@@ -68,6 +73,11 @@ public partial class TaskControllerTest
         _setTaskInProgressUseCase.Verify(x => x.SetTaskInProgress(
                 It.IsAny<string>()),
             Times.Once);
-        response.ShouldBeOfType<ObjectResult>();
+        var objectResult = response
+            .ShouldBeOfType<ObjectResult>();
+        objectResult.StatusCode
+            .ShouldBe((int)HttpStatusCode.InternalServerError);
+        objectResult.Value.ShouldNotBeNull();
+        objectResult.Value.ShouldBeOfType<Response>();
     }
 }

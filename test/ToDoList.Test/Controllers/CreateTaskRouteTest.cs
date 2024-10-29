@@ -1,4 +1,6 @@
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using ToDoList.Application.Responses;
 using ToDoList.Test.Builders;
 
 namespace ToDoList.Test.Controllers;
@@ -26,8 +28,12 @@ public partial class TaskControllerTest
         _createTaskUseCase.Verify(x => x.CreateTask(
                 It.IsAny<string>()),
             Times.Once);
-        var createdResult = response.ShouldBeOfType<CreatedResult>();
+        var createdResult = response
+            .ShouldBeOfType<CreatedResult>();
         createdResult.Location.ShouldNotBeEmpty();
+        createdResult.Value.ShouldNotBeNull();
+        createdResult.Value
+            .ShouldBeOfType<CreateTaskResponse>();
     }
 
     [Fact]
@@ -51,7 +57,11 @@ public partial class TaskControllerTest
         _createTaskUseCase.Verify(x => x.CreateTask(
                 It.IsAny<string>()),
             Times.Once);
-        response.ShouldBeOfType<BadRequestObjectResult>();
+        var badRequestResult = response
+            .ShouldBeOfType<BadRequestObjectResult>();
+        badRequestResult.Value.ShouldNotBeNull();
+        badRequestResult.Value
+            .ShouldBeOfType<Response<CreateTaskResponse>>();
     }
 
     [Fact]
@@ -75,6 +85,12 @@ public partial class TaskControllerTest
         _createTaskUseCase.Verify(x => x.CreateTask(
                 It.IsAny<string>()),
             Times.Once);
-        response.ShouldBeOfType<ObjectResult>();
+        var objectResult = response
+            .ShouldBeOfType<ObjectResult>();
+        objectResult.StatusCode
+            .ShouldBe((int)HttpStatusCode.InternalServerError);
+        objectResult.Value.ShouldNotBeNull();
+        objectResult.Value
+            .ShouldBeOfType<Response<CreateTaskResponse>>();
     }
 }
