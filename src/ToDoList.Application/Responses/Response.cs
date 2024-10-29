@@ -48,6 +48,14 @@ public class Response<T> where T : class
         new(content: null!,
             ResponseType.NOT_FOUND,
             errors);
+
+    public static Response<T> NotFound(string error)
+    {
+        var errors = new string[] { error };
+        return new(content: null!,
+            ResponseType.NOT_FOUND,
+            errors);
+    }
 }
 
 public class Response

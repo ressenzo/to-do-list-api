@@ -38,7 +38,7 @@ public class GetTasksUseCaseTest
 
         // Assert
         result.Type.ShouldBe(ResponseType.NOT_FOUND);
-        result.Errors.ShouldBeEmpty();
+        result.Errors.ShouldNotBeEmpty();
     }
 
     public static IEnumerable<object[]> NotFoundTasks() =>
@@ -64,5 +64,25 @@ public class GetTasksUseCaseTest
 
         // Assert
         result.Type.ShouldBe(ResponseType.SUCCESS);
+    }
+
+    [Fact]
+    public async Task WhenExpcetionIsThrown_ShouldReturnInternalError()
+    {
+        // Arrange
+        var exception = new Exception("Exception");
+        _taskRepository
+            .Setup(x => x.GetTasks())
+            .ThrowsAsync(exception);
+
+        // Act
+        var result = await _getTasksUseCase.GetTasks();
+
+        // Assert
+        result.Type.ShouldBe(ResponseType.INTERNAL_ERROR);
+        _logger.VerifyLog(x => x.LogError(exception,
+                "{Message}",
+                exception.Message),
+            Times.Once);
     }
 }

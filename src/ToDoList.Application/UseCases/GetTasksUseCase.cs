@@ -11,14 +11,24 @@ internal class GetTasksUseCase(
 {
     public async Task<Response<GetTasksResponse>> GetTasks()
     {
-        var tasks = await taskRepository.GetTasks();
-        if (tasks is null ||
-            !tasks.Any())
+        try
         {
-            return Response<GetTasksResponse>.NotFound([]);
+            var tasks = await taskRepository.GetTasks();
+            if (tasks is null ||
+                !tasks.Any())
+            {
+                return Response<GetTasksResponse>.NotFound("None task was found");
+            }
+            
+            var response = GetTasksResponse.Construct(tasks);
+            return Response<GetTasksResponse>.Success(response);
         }
-        
-        var response = GetTasksResponse.Construct(tasks);
-        return Response<GetTasksResponse>.Success(response);
+        catch (Exception ex)
+        {
+            logger.LogError(ex,
+                "{Message}",
+                ex.Message);
+            return Response<GetTasksResponse>.InternalError();
+        }
     }
 }
