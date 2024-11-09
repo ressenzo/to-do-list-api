@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplication();
 builder.Services.AddDomain();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -28,5 +29,11 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseCors(x => 
+{
+    x.AllowAnyOrigin();
+    x.AllowAnyMethod();
+    x.AllowAnyHeader();
+});
 
 app.Run();
