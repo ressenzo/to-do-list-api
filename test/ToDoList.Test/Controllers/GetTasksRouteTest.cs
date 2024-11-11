@@ -34,7 +34,7 @@ public partial class TaskControllerTest
     }
 
     [Fact]
-    public async Task GetTasksRoute_Type_WhenIsNotFound_ShouldReturnNotFound()
+    public async Task GetTasksRoute_Type_WhenIsNotFound_ShouldReturnOk()
     {
         // Arrange
         var notFoundResponse = new GetTasksResponseBuilder()
@@ -53,10 +53,10 @@ public partial class TaskControllerTest
             .Verify(x => x.GetTasks(),
                 Times.Once);
         var notFoundResult = response
-            .ShouldBeOfType<NotFoundObjectResult>();
+            .ShouldBeOfType<OkObjectResult>();
         notFoundResult.Value.ShouldNotBeNull();
         notFoundResult.Value
-            .ShouldBeOfType<Response<GetTasksResponse>>();
+            .ShouldBeOfType<GetTasksResponse>();
     }
 
     [Fact]

@@ -39,6 +39,9 @@ public class GetTasksUseCaseTest
         // Assert
         result.Type.ShouldBe(ResponseType.NOT_FOUND);
         result.Errors.ShouldNotBeEmpty();
+        result.Content.ShouldNotBeNull();
+        result.Content.Tasks.ShouldNotBeNull();
+        result.Content.Tasks.ShouldBeEmpty();
     }
 
     public static IEnumerable<object[]> NotFoundTasks() =>

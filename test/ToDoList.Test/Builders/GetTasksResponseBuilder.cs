@@ -21,8 +21,10 @@ public class GetTasksResponseBuilder : BaseBuilder<Response<GetTasksResponse>>
 
     public GetTasksResponseBuilder NotFound()
     {
+        var getTasksResponse = GetTasksResponse
+            .Construct([]);
         _response = Response<GetTasksResponse>
-            .NotFound([]);
+            .NotFound(getTasksResponse, []);
         return this;
     }
 

@@ -26,7 +26,7 @@ public class TaskController(
         return result.Type switch
         {
             ResponseType.SUCCESS => Ok(result.Content),
-            ResponseType.NOT_FOUND => NotFound(result),
+            ResponseType.NOT_FOUND => Ok(result.Content),
             ResponseType.INTERNAL_ERROR => ReturnInternalError(result),
             _ => ReturnInternalError(result)
         };

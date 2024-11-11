@@ -44,10 +44,26 @@ public class Response<T> where T : class
             errors: ["An error ocurred during this operation"]);
 
     public static Response<T> NotFound(
+        T content,
+        IEnumerable<string> errors) =>
+        new(content,
+            ResponseType.NOT_FOUND,
+            errors);
+
+    public static Response<T> NotFound(
         IEnumerable<string> errors) =>
         new(content: null!,
             ResponseType.NOT_FOUND,
             errors);
+
+    public static Response<T> NotFound(T content,
+        string error)
+    {
+        var errors = new string[] { error };
+        return new(content,
+            ResponseType.NOT_FOUND,
+            errors);
+    }    
 
     public static Response<T> NotFound(string error)
     {

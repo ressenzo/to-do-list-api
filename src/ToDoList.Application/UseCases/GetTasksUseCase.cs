@@ -17,7 +17,9 @@ internal class GetTasksUseCase(
             if (tasks is null ||
                 !tasks.Any())
             {
-                return Response<GetTasksResponse>.NotFound("None task was found");
+                return Response<GetTasksResponse>.NotFound(
+                    content: GetTasksResponse.Construct([]),
+                    error: "None task was found");
             }
             
             var response = GetTasksResponse.Construct(tasks);
