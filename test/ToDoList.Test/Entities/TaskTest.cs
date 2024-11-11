@@ -12,8 +12,7 @@ public class TaskTest
     [InlineData("")]
     [InlineData(" ")]
     public void Description_WhenIsInvalidValue_ShouldBeFalse(
-        string description
-    )
+        string description)
     {
         // Arrange - Act
         var task = Task.Construct(description);
@@ -80,6 +79,57 @@ public class TaskTest
 
         // Assert
         task.Status.ShouldBe(Status.IN_PROGRESS);
+    }
+
+    [Theory]
+    [InlineData(Status.DONE)]
+    [InlineData(Status.CANCELED)]
+    public void Status_WhenSetAsInProgressButStatusIsDoneOrCanceled_ShouldNotChangeStatus(
+        Status status)
+    {
+        // Arrange
+        var task = new TaskBuilder()
+            .WithStatus(status)
+            .Build();
+
+        // Act
+        task.SetAsInProgress();
+
+        // Assert
+        task.Status.ShouldBe(status);
+    }
+
+    [Theory]
+    [InlineData(Status.CREATED)]
+    [InlineData(Status.CANCELED)]
+    public void Status_WhenSetAsDoneButStatusIsCreatedOrCanceled_ShouldNotChangeStatus(
+        Status status)
+    {
+        // Arrange
+        var task = new TaskBuilder()
+            .WithStatus(status)
+            .Build();
+
+        // Act
+        task.SetAsDone();
+
+        // Assert
+        task.Status.ShouldBe(status);
+    }
+
+    [Fact]
+    public void Status_WhenSetAsCanceledButStatusIsDone_ShouldNotChangeStatus()
+    {
+        // Arrange
+        var task = new TaskBuilder()
+            .WithStatus(Status.DONE)
+            .Build();
+
+        // Act
+        task.SetAsCanceled();
+
+        // Assert
+        task.Status.ShouldBe(Status.DONE);
     }
 
     [Fact]

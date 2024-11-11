@@ -59,12 +59,29 @@ public class Task : Entity, ITask
         return isValid;
     }
 
-    public void SetAsInProgress() =>
+    public void SetAsInProgress()
+    {
+        if (Status.Equals(Status.DONE) ||
+            Status.Equals(Status.CANCELED))
+            return;
+
         Status = Status.IN_PROGRESS;
+    }
 
-    public void SetAsDone() =>
+    public void SetAsDone()
+    {
+        if (Status.Equals(Status.CREATED) ||
+            Status.Equals(Status.CANCELED))
+            return;
+
         Status = Status.DONE;
+    }
 
-    public void SetAsCanceled() =>
+    public void SetAsCanceled()
+    {
+        if (Status.Equals(Status.DONE))
+            return;
+
         Status = Status.CANCELED;
+    }
 }
