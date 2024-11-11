@@ -5,13 +5,13 @@ using ToDoList.Infrastructure.Repositories.Interfaces;
 
 namespace ToDoList.Application.UseCases;
 
-internal class SetTaskInProgressUseCase(
-    ILogger<SetTaskInProgressUseCase> logger,
-    ITaskRepository taskRepository) : ISetTaskInProgressUseCase
+internal class SetTaskDoneUseCase(
+    ILogger<SetTaskDoneUseCase> logger,
+    ITaskRepository taskRepository) : ISetTaskDoneUseCase
 {
     private const int _ID_LENGTH = 8;
 
-    public async Task<Response> SetTaskInProgress(string id)
+    public async Task<Response> SetTaskDone(string id)
     {
         try
         {
@@ -42,11 +42,11 @@ internal class SetTaskInProgressUseCase(
                 .NotFound([$"Task with id {id} not found"]);
         }
 
-        task.SetAsInProgress();
+        task.SetAsDone();
         var updateResult = await taskRepository.UpdateTask(task);
         if (updateResult)
             return Response.Success();
-        
+
         return Response.InternalError();
     }
 }
