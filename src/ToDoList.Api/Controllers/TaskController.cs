@@ -12,7 +12,8 @@ namespace ToDoList.Api.Controllers;
 public class TaskController(
     IGetTasksUseCase getTasksUseCase,
     ICreateTaskUseCase createTaskUseCase,
-    ISetTaskInProgressUseCase setTaskInProgressUseCase) : ControllerBase
+    ISetTaskInProgressUseCase setTaskInProgressUseCase,
+    ISetTaskDoneUseCase setTaskDoneUseCase) : ControllerBase
 {
     [HttpGet]
     [SwaggerOperation("Get all tasks")]
@@ -68,6 +69,21 @@ public class TaskController(
         {
             ResponseType.SUCCESS => NoContent(),
             ResponseType.VALIDATION_ERROR => BadRequest(result),
+            ResponseType.INTERNAL_ERROR => ReturnInternalError(result),
+            _ => ReturnInternalError(result)
+        };
+    }
+
+    [HttpPut("{id}/done")]
+    public async Task<IActionResult> SetTaskDone(string id)
+    {
+        var result = await setTaskDoneUseCase
+            .SetTaskDone(id);
+
+        return result.Type switch
+        {
+            ResponseType.VALIDATION_ERROR => BadRequest(result),
+            ResponseType.SUCCESS => NoContent(),
             ResponseType.INTERNAL_ERROR => ReturnInternalError(result),
             _ => ReturnInternalError(result)
         };
