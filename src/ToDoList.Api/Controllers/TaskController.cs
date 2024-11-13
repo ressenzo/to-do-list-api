@@ -17,9 +17,9 @@ public class TaskController(
 {
     [HttpGet]
     [SwaggerOperation("Get all tasks")]
-    [SwaggerResponse(statusCode: (int)HttpStatusCode.OK, type: typeof(GetTasksResponse))]
-    [SwaggerResponse(statusCode: (int)HttpStatusCode.NotFound, type: typeof(Response))]
-    [SwaggerResponse(statusCode: (int)HttpStatusCode.InternalServerError, type: typeof(Response))]
+    [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(GetTasksResponse))]
+    [SwaggerResponse(statusCode: StatusCodes.Status404NotFound, type: typeof(Response))]
+    [SwaggerResponse(statusCode: StatusCodes.Status500InternalServerError, type: typeof(Response))]
     public async Task<IActionResult> GetTasks()
     {
         var result = await getTasksUseCase
@@ -35,9 +35,9 @@ public class TaskController(
 
     [HttpPost]
     [SwaggerOperation("Create a new task")]
-    [SwaggerResponse(statusCode: (int)HttpStatusCode.Created, type: typeof(CreateTaskResponse))]
-    [SwaggerResponse(statusCode: (int)HttpStatusCode.BadRequest, type: typeof(Response))]
-    [SwaggerResponse(statusCode: (int)HttpStatusCode.InternalServerError, type: typeof(Response))]
+    [SwaggerResponse(statusCode: StatusCodes.Status201Created, type: typeof(CreateTaskResponse))]
+    [SwaggerResponse(statusCode: StatusCodes.Status400BadRequest, type: typeof(Response))]
+    [SwaggerResponse(statusCode: StatusCodes.Status500InternalServerError, type: typeof(Response))]
     public async Task<IActionResult> CreateTask(
         CreateTaskRequest request)
     {
@@ -57,9 +57,9 @@ public class TaskController(
 
     [HttpPut("{id}/in-progress")]
     [SwaggerOperation("Set a task as in progress")]
-    [SwaggerResponse(statusCode: (int)HttpStatusCode.NoContent)]
-    [SwaggerResponse(statusCode: (int)HttpStatusCode.BadRequest, type: typeof(Response))]
-    [SwaggerResponse(statusCode: (int)HttpStatusCode.InternalServerError, type: typeof(Response))]
+    [SwaggerResponse(statusCode: StatusCodes.Status204NoContent)]
+    [SwaggerResponse(statusCode: StatusCodes.Status400BadRequest, type: typeof(Response))]
+    [SwaggerResponse(statusCode: StatusCodes.Status500InternalServerError, type: typeof(Response))]
     public async Task<IActionResult> SetTaskInProgress(string id)
     {
         var result = await setTaskInProgressUseCase
@@ -75,6 +75,10 @@ public class TaskController(
     }
 
     [HttpPut("{id}/done")]
+    [SwaggerOperation("Set a task as done")]
+    [SwaggerResponse(statusCode: StatusCodes.Status204NoContent)]
+    [SwaggerResponse(statusCode: StatusCodes.Status400BadRequest, type: typeof(Response))]
+    [SwaggerResponse(statusCode: StatusCodes.Status500InternalServerError, type: typeof(Response))]
     public async Task<IActionResult> SetTaskDone(string id)
     {
         var result = await setTaskDoneUseCase
