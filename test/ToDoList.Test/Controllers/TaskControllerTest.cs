@@ -10,6 +10,7 @@ public partial class TaskControllerTest
     private readonly Mock<ICreateTaskUseCase> _createTaskUseCase;
     private readonly Mock<ISetTaskInProgressUseCase> _setTaskInProgressUseCase;
     private readonly Mock<ISetTaskDoneUseCase> _setTaskDoneUseCase;
+    private readonly Mock<ISetTaskCanceledUseCase> _setTaskCanceledUseCase;
 
     public TaskControllerTest()
     {
@@ -17,10 +18,12 @@ public partial class TaskControllerTest
         _createTaskUseCase = new();
         _setTaskInProgressUseCase = new();
         _setTaskDoneUseCase = new();
+        _setTaskCanceledUseCase = new();
         _taskController = new(
             _getTasksUseCase.Object,
             _createTaskUseCase.Object,
             _setTaskInProgressUseCase.Object,
-            _setTaskDoneUseCase.Object);
+            _setTaskDoneUseCase.Object,
+            _setTaskCanceledUseCase.Object);
     }
 }

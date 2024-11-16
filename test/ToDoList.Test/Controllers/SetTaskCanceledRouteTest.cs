@@ -8,22 +8,22 @@ namespace ToDoList.Test.Controllers;
 public partial class TaskControllerTest
 {
     [Fact]
-    public async Task SetTaskDoneRoute_Type_WhenIsValidationError_ShouldReturnBadRequest()
+    public async Task SetTaskCanceledRoute_Type_WhenIsValidationError_ShouldReturnBadRequest()
     {
         // Arrange
         var barRequestResponse = new SetTaskStatusBuilder()
             .ValidationError()
             .Build();
-        _setTaskDoneUseCase
-            .Setup(x => x.SetTaskDone(It.IsAny<string>()))
+        _setTaskCanceledUseCase
+            .Setup(x => x.SetTaskCanceled(It.IsAny<string>()))
             .ReturnsAsync(barRequestResponse);
 
         // Act
-        var response = await _taskController.SetTaskDone(
+        var response = await _taskController.SetTaskCanceled(
             id: "abc");
 
         // Assert
-        _setTaskDoneUseCase.Verify(x => x.SetTaskDone(
+        _setTaskCanceledUseCase.Verify(x => x.SetTaskCanceled(
                 It.IsAny<string>()),
             Times.Once);
         var badRequestResult = response
@@ -33,44 +33,44 @@ public partial class TaskControllerTest
     }
 
     [Fact]
-    public async Task SetTaskDoneRoute_Type_WhenIsSuccess_ShouldReturnNoContent()
+    public async Task SetTaskCanceledRoute_Type_WhenIsSuccess_ShouldReturnNoContent()
     {
         // Arrange
         var successResponse = new SetTaskStatusBuilder()
             .Success()
             .Build();
-        _setTaskDoneUseCase
-            .Setup(x => x.SetTaskDone(It.IsAny<string>()))
+        _setTaskCanceledUseCase
+            .Setup(x => x.SetTaskCanceled(It.IsAny<string>()))
             .ReturnsAsync(successResponse);
 
         // Act
-        var response = await _taskController.SetTaskDone(
+        var response = await _taskController.SetTaskCanceled(
             id: "abc");
 
         // Assert
-        _setTaskDoneUseCase.Verify(x => x.SetTaskDone(
+        _setTaskCanceledUseCase.Verify(x => x.SetTaskCanceled(
                 It.IsAny<string>()),
             Times.Once);
         response.ShouldBeOfType<NoContentResult>();
     }
 
     [Fact]
-    public async Task SetTaskDoneRoute_Type_WhenIsInternalError_ShouldReturnInternalError()
+    public async Task SetTaskCanceledRoute_Type_WhenIsInternalError_ShouldReturnInternalError()
     {
         // Arrange
         var internalErrorResponse = new SetTaskStatusBuilder()
             .InternalError()
             .Build();
-        _setTaskDoneUseCase
-            .Setup(x => x.SetTaskDone(It.IsAny<string>()))
+        _setTaskCanceledUseCase
+            .Setup(x => x.SetTaskCanceled(It.IsAny<string>()))
             .ReturnsAsync(internalErrorResponse);
 
         // Act
         var response  = await _taskController
-            .SetTaskDone(id: "abc");
+            .SetTaskCanceled(id: "abc");
 
         // Assert
-        _setTaskDoneUseCase.Verify(x => x.SetTaskDone(
+        _setTaskCanceledUseCase.Verify(x => x.SetTaskCanceled(
                 It.IsAny<string>()),
             Times.Once);
         var objectResult = response

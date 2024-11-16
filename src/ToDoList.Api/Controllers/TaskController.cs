@@ -13,7 +13,8 @@ public class TaskController(
     IGetTasksUseCase getTasksUseCase,
     ICreateTaskUseCase createTaskUseCase,
     ISetTaskInProgressUseCase setTaskInProgressUseCase,
-    ISetTaskDoneUseCase setTaskDoneUseCase) : ControllerBase
+    ISetTaskDoneUseCase setTaskDoneUseCase,
+    ISetTaskCanceledUseCase setTaskCanceledUseCase) : ControllerBase
 {
     [HttpGet]
     [SwaggerOperation("Get all tasks")]
@@ -83,6 +84,25 @@ public class TaskController(
     {
         var result = await setTaskDoneUseCase
             .SetTaskDone(id);
+
+        return result.Type switch
+        {
+            ResponseType.VALIDATION_ERROR => BadRequest(result),
+            ResponseType.SUCCESS => NoContent(),
+            ResponseType.INTERNAL_ERROR => ReturnInternalError(result),
+            _ => ReturnInternalError(result)
+        };
+    }
+
+    [HttpPut("{id}/canceled")]
+    [SwaggerOperation("Set a task as canceled")]
+    [SwaggerResponse(statusCode: StatusCodes.Status204NoContent)]
+    [SwaggerResponse(statusCode: StatusCodes.Status400BadRequest, type: typeof(Response))]
+    [SwaggerResponse(statusCode: StatusCodes.Status500InternalServerError, type: typeof(Response))]
+    public async Task<IActionResult> SetTaskCanceled(string id)
+    {
+        var result = await setTaskCanceledUseCase
+            .SetTaskCanceled(id);
 
         return result.Type switch
         {

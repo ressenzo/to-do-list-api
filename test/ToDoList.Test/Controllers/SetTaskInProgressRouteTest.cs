@@ -55,7 +55,7 @@ public partial class TaskControllerTest
     }
 
     [Fact]
-    public async Task SetTaskInProgressRoute_Type_WhenIsInternalError_ShouldReturnBadRequest()
+    public async Task SetTaskInProgressRoute_Type_WhenIsInternalError_ShouldReturnInternalError()
     {
         // Arrange
         var internalErrorResponse = new SetTaskStatusBuilder()
