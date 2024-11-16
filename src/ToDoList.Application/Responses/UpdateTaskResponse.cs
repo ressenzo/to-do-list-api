@@ -1,25 +1,32 @@
 using ToDoList.Domain.Entities.Interfaces;
+using ToDoList.Domain.Enums;
 
 namespace ToDoList.Application.Responses;
 
-public class UpdateTaskResponse
+public record UpdateTaskResponse
 {
-    private UpdateTaskResponse(ITask task)
+    public string Id { get; private set; }
+
+    public string Description { get; private set; }
+
+    public DateTime CreationDate { get; private set; }
+
+    public Status Status { get; private set; }
+
+    private UpdateTaskResponse(string id,
+        string description,
+        DateTime creationDate,
+        Status status)
     {
-        Task = new(task.Id,
-            task.Description,
-            task.CreationDate,
-            (int)task.Status);
+        Id = id;
+        Description = description;
+        CreationDate = creationDate;
+        Status = status;
     }
 
-    public UpdateTaskModel Task { get; set; }
-
-    public static UpdateTaskResponse Construct(
-        ITask task) =>
-        new(task);
+    public static UpdateTaskResponse Construct(ITask task) =>
+        new(task.Id,
+            task.Description,
+            task.CreationDate,
+            task.Status);
 }
-
-public record UpdateTaskModel(string Id,
-    string Description,
-    DateTime CreationDate,
-    int Status);
