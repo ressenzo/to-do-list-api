@@ -20,6 +20,7 @@ public static class ApplicationDependency
             .AddScoped<ICreateTaskUseCase, CreateTaskUseCase>()
             .AddScoped<ISetTaskInProgressUseCase, SetTaskInProgressUseCase>()
             .AddScoped<IGetTasksUseCase, GetTasksUseCase>()
-            .AddScoped<ISetTaskDoneUseCase, SetTaskDoneUseCase>();
+            .AddScoped<ISetTaskDoneUseCase, SetTaskDoneUseCase>()
+            .AddScoped<ISetTaskCanceledUseCase, SetTaskCanceledUseCase>();
     }
 }
