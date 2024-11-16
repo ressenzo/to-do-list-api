@@ -34,7 +34,7 @@ public partial class TaskControllerTest
     }
 
     [Fact]
-    public async Task GetTasksRoute_Type_WhenIsNotFound_ShouldReturnOk()
+    public async Task GetTasksRoute_Type_WhenIsNotFound_ShouldReturnNotFound()
     {
         // Arrange
         var notFoundResponse = new GetTasksResponseBuilder()
@@ -53,14 +53,14 @@ public partial class TaskControllerTest
             .Verify(x => x.GetTasks(),
                 Times.Once);
         var notFoundResult = response
-            .ShouldBeOfType<OkObjectResult>();
+            .ShouldBeOfType<NotFoundObjectResult>();
         notFoundResult.Value.ShouldNotBeNull();
         notFoundResult.Value
-            .ShouldBeOfType<GetTasksResponse>();
+            .ShouldBeOfType<Response<GetTasksResponse>>();
     }
 
     [Fact]
-    public async Task GetTasksRoute_Type_WhenIsInternalError_ShouldReturn500()
+    public async Task GetTasksRoute_Type_WhenIsInternalError_ShouldReturnInternalServerError()
     {
         // Arrange
         var internalErrorResponse = new GetTasksResponseBuilder()

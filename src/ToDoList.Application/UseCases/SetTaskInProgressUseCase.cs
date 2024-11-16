@@ -11,14 +11,14 @@ internal class SetTaskInProgressUseCase(
 {
     private const int _ID_LENGTH = 8;
 
-    public async Task<Response> SetTaskInProgress(string id)
+    public async Task<Response<UpdateTaskResponse>> SetTaskInProgress(string id)
     {
         try
         {
             if (string.IsNullOrWhiteSpace(id) ||
                 id.Length > _ID_LENGTH)
             {
-                return Response
+                return Response<UpdateTaskResponse>
                     .ValidationError([$"{nameof(id)} should be passed"]);
             }
 
@@ -29,24 +29,27 @@ internal class SetTaskInProgressUseCase(
             logger.LogError(ex,
                 "{Message}",
                 ex.Message);
-            return Response.InternalError();
+            return Response<UpdateTaskResponse>.InternalError();
         }
     }
 
-    private async Task<Response> GetAndUpdateTask(string id)
+    private async Task<Response<UpdateTaskResponse>> GetAndUpdateTask(string id)
     {
         var task = await taskRepository.GetTask(id);
         if (task is null)
         {
-            return Response
+            return Response<UpdateTaskResponse>
                 .NotFound([$"Task with id {id} not found"]);
         }
 
         task.SetAsInProgress();
         var updateResult = await taskRepository.UpdateTask(task);
         if (updateResult)
-            return Response.Success();
+        {
+            var response = UpdateTaskResponse.Construct(task);
+            return Response<UpdateTaskResponse>.Success(response);
+        }
         
-        return Response.InternalError();
+        return Response<UpdateTaskResponse>.InternalError();
     }
 }

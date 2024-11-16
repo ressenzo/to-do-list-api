@@ -4,5 +4,5 @@ namespace ToDoList.Application.UseCases.Interfaces;
 
 public interface ISetTaskInProgressUseCase
 {
-    Task<Response> SetTaskInProgress(string id);
+    Task<Response<UpdateTaskResponse>> SetTaskInProgress(string id);
 }

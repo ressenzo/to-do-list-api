@@ -28,7 +28,7 @@ public class TaskController(
         return result.Type switch
         {
             ResponseType.SUCCESS => Ok(result.Content),
-            ResponseType.NOT_FOUND => Ok(result.Content),
+            ResponseType.NOT_FOUND => NotFound(result),
             ResponseType.INTERNAL_ERROR => ReturnInternalError(result),
             _ => ReturnInternalError(result)
         };
@@ -58,7 +58,7 @@ public class TaskController(
 
     [HttpPut("{id}/in-progress")]
     [SwaggerOperation("Set a task as in progress")]
-    [SwaggerResponse(statusCode: StatusCodes.Status204NoContent)]
+    [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(UpdateTaskResponse))]
     [SwaggerResponse(statusCode: StatusCodes.Status400BadRequest, type: typeof(Response))]
     [SwaggerResponse(statusCode: StatusCodes.Status500InternalServerError, type: typeof(Response))]
     public async Task<IActionResult> SetTaskInProgress(string id)
@@ -68,7 +68,7 @@ public class TaskController(
 
         return result.Type switch
         {
-            ResponseType.SUCCESS => NoContent(),
+            ResponseType.SUCCESS => Ok(result.Content),
             ResponseType.VALIDATION_ERROR => BadRequest(result),
             ResponseType.INTERNAL_ERROR => ReturnInternalError(result),
             _ => ReturnInternalError(result)
@@ -77,7 +77,7 @@ public class TaskController(
 
     [HttpPut("{id}/done")]
     [SwaggerOperation("Set a task as done")]
-    [SwaggerResponse(statusCode: StatusCodes.Status204NoContent)]
+    [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(UpdateTaskResponse))]
     [SwaggerResponse(statusCode: StatusCodes.Status400BadRequest, type: typeof(Response))]
     [SwaggerResponse(statusCode: StatusCodes.Status500InternalServerError, type: typeof(Response))]
     public async Task<IActionResult> SetTaskDone(string id)
@@ -88,7 +88,7 @@ public class TaskController(
         return result.Type switch
         {
             ResponseType.VALIDATION_ERROR => BadRequest(result),
-            ResponseType.SUCCESS => NoContent(),
+            ResponseType.SUCCESS => Ok(result.Content),
             ResponseType.INTERNAL_ERROR => ReturnInternalError(result),
             _ => ReturnInternalError(result)
         };
@@ -96,7 +96,7 @@ public class TaskController(
 
     [HttpPut("{id}/canceled")]
     [SwaggerOperation("Set a task as canceled")]
-    [SwaggerResponse(statusCode: StatusCodes.Status204NoContent)]
+    [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(UpdateTaskResponse))]
     [SwaggerResponse(statusCode: StatusCodes.Status400BadRequest, type: typeof(Response))]
     [SwaggerResponse(statusCode: StatusCodes.Status500InternalServerError, type: typeof(Response))]
     public async Task<IActionResult> SetTaskCanceled(string id)
@@ -107,7 +107,7 @@ public class TaskController(
         return result.Type switch
         {
             ResponseType.VALIDATION_ERROR => BadRequest(result),
-            ResponseType.SUCCESS => NoContent(),
+            ResponseType.SUCCESS => Ok(result.Content),
             ResponseType.INTERNAL_ERROR => ReturnInternalError(result),
             _ => ReturnInternalError(result)
         };

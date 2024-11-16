@@ -11,7 +11,7 @@ public partial class TaskControllerTest
     public async Task SetTaskCanceledRoute_Type_WhenIsValidationError_ShouldReturnBadRequest()
     {
         // Arrange
-        var barRequestResponse = new SetTaskStatusBuilder()
+        var barRequestResponse = new UpdateTaskBuilder()
             .ValidationError()
             .Build();
         _setTaskCanceledUseCase
@@ -29,14 +29,14 @@ public partial class TaskControllerTest
         var badRequestResult = response
             .ShouldBeOfType<BadRequestObjectResult>();
         badRequestResult.Value.ShouldNotBeNull();
-        badRequestResult.Value.ShouldBeOfType<Response>();
+        badRequestResult.Value.ShouldBeOfType<Response<UpdateTaskResponse>>();
     }
 
     [Fact]
     public async Task SetTaskCanceledRoute_Type_WhenIsSuccess_ShouldReturnNoContent()
     {
         // Arrange
-        var successResponse = new SetTaskStatusBuilder()
+        var successResponse = new UpdateTaskBuilder()
             .Success()
             .Build();
         _setTaskCanceledUseCase
@@ -51,14 +51,18 @@ public partial class TaskControllerTest
         _setTaskCanceledUseCase.Verify(x => x.SetTaskCanceled(
                 It.IsAny<string>()),
             Times.Once);
-        response.ShouldBeOfType<NoContentResult>();
+        var okObjectResult = response
+            .ShouldBeOfType<OkObjectResult>();
+        okObjectResult.Value.ShouldNotBeNull();
+        okObjectResult.Value
+            .ShouldBeOfType<UpdateTaskResponse>();
     }
 
     [Fact]
     public async Task SetTaskCanceledRoute_Type_WhenIsInternalError_ShouldReturnInternalError()
     {
         // Arrange
-        var internalErrorResponse = new SetTaskStatusBuilder()
+        var internalErrorResponse = new UpdateTaskBuilder()
             .InternalError()
             .Build();
         _setTaskCanceledUseCase
@@ -78,6 +82,6 @@ public partial class TaskControllerTest
         objectResult.StatusCode
             .ShouldBe((int)HttpStatusCode.InternalServerError);
         objectResult.Value.ShouldNotBeNull();
-        objectResult.Value.ShouldBeOfType<Response>();
+        objectResult.Value.ShouldBeOfType<Response<UpdateTaskResponse>>();
     }
 }

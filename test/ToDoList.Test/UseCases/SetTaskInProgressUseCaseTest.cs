@@ -93,7 +93,10 @@ public class SetTaskInProgressUseCaseTest
         // Assert
         result.Type.ShouldBe(responseType);
         if (updateResult)
+        {
+            result.Content.ShouldNotBeNull();
             result.Errors.ShouldBeEmpty();
+        }
         else
             result.Errors.ShouldNotBeEmpty();
         _taskRepository
