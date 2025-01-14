@@ -1,0 +1,23 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
+WORKDIR /app
+
+COPY src/ToDoList.Api/*.csproj ./src/ToDoList.Api/
+COPY src/ToDoList.Application/*.csproj ./src/ToDoList.Application/
+COPY src/ToDoList.Domain/*.csproj ./src/ToDoList.Domain/
+COPY src/ToDoList.Infrastructure/*.csproj ./src/ToDoList.Infrastructure/
+RUN dotnet restore src/ToDoList.Api/ToDoList.Api.csproj
+
+COPY src/ ./src
+
+RUN dotnet publish src/ToDoList.Api/ToDoList.Api.csproj -c Release -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+
+WORKDIR /app
+
+COPY --from=build /app/publish .
+
+EXPOSE 8080
+
+ENTRYPOINT ["dotnet", "ToDoList.Api.dll"]
