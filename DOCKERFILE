@@ -18,6 +18,9 @@ WORKDIR /app
 
 COPY --from=build /app/publish .
 
-EXPOSE 8080
+# if i want to specify port, put in two lines below
+#EXPOSE 5000
+#ENV ASPNETCORE_URLS=http://*:5000
+# container will automatically exposes port 8080
 
 ENTRYPOINT ["dotnet", "ToDoList.Api.dll"]
